@@ -1,0 +1,32 @@
+<div class="root border rounded p-3">
+  <h4 class="text-center mb-3">Media Selector</h4>
+
+  <form [formGroup]="mediaForm">
+    <label for="name">Name</label>
+    <input
+      class="form-control mb-4"
+      id="name"
+      aria-describedby="nameHelp"
+      placeholder="Enter name..."
+      formControlName="name"
+    />
+
+    <label for="description">Description</label>
+    <textarea
+      class="form-control mb-4"
+      style="resize: none"
+      id="description"
+      aria-describedby="descriptionHelp"
+      placeholder="Enter description..."
+      rows="3"
+      formControlName="description"
+    ></textarea>
+
+    <button class="btn btn-primary mr-2" (click)="onOpenModal()">
+      Select Image
+    </button>
+    <button class="btn btn-outline-primary" (click)="onLogForm()">
+      Log Form
+    </button>
+  </form>
+</div>
