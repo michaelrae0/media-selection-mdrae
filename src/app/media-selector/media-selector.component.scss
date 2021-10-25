@@ -1,5 +1,79 @@
+@import "~bootstrap/scss/bootstrap";
+
 .root {
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
+}
+
+.form-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100px;
+
+  .form-image-wrapper {
+    position: relative;
+    max-width: 100%;
+
+    .form-image {
+      max-height: 200px;
+      max-width: 100%;
+    }
+
+    .form-image-close {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      height: 16px;
+      width: 16px;
+      padding: 2px;
+      border: black 1px solid;
+      border-radius: 12px;
+      background-color: $gray-200;
+      transition: all 0.15s ease-in-out;
+
+      &:hover {
+        background-color: $gray-500;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.modal-body {
+  max-height: 80vh;
+  min-height: 72px;
+  overflow-y: scroll;
+
+  .modal-image-container {
+    // Responsive design:
+    // 1 columns at mobile
+    // 2 columns at tablet & desktop
+    @include make-col-ready();
+    @include make-col(12);
+
+    @include media-breakpoint-up(sm) {
+      @include make-col(6);
+    }
+
+    display: flex;
+    justify-content: center;
+
+    .modal-image-button {
+      max-width: 100%;
+      padding: 0;
+      background-color: transparent;
+      border-color: transparent;
+
+      img {
+        max-width: 100%;
+        max-height: 180px;
+
+        @include media-breakpoint-up(sm) {
+          max-height: 250px;
+        }
+      }
+    }
+  }
 }

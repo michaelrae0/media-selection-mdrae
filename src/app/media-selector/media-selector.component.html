@@ -1,4 +1,4 @@
-<div class="root border rounded p-3">
+<div class="root border rounded p-3 bg-white">
   <h4 class="text-center mb-3">Media Selector</h4>
 
   <form [formGroup]="mediaForm">
@@ -22,11 +22,80 @@
       formControlName="description"
     ></textarea>
 
-    <button class="btn btn-primary mr-2" (click)="onOpenModal()">
+    <label for="media">Media</label>
+    <div class="form-image-container mb-4 p-2 bg-light border rounded">
+      <!-- Selected image -->
+      <span
+        *ngIf="getSelectedImageId(); else elseSelectedBlock"
+        class="form-image-wrapper"
+      >
+        <img src="{{ getSelectedImage() }}" class="form-image" />
+        <img
+          src="assets/svg/close-icon.svg"
+          (click)="onUnselectImage()"
+          class="form-image-close"
+        />
+      </span>
+
+      <!-- No image selected -->
+      <ng-template #elseSelectedBlock
+        ><p class="m-0 text-secondary font-weight-light">
+          Select Image
+        </p></ng-template
+      >
+
+      <!-- <input/> stores media id (Doing this as an example of programmatically 
+        updating responsive forms - selected img can be viewed with onLogForm()) -->
+      <input class="form-control d-none" id="media" formControlName="media" />
+    </div>
+
+    <button class="btn btn-primary mr-2 mb-2" (click)="onOpenModal(content)">
       Select Image
     </button>
-    <button class="btn btn-outline-primary" (click)="onLogForm()">
+    <button class="btn btn-outline-primary mr-2 mb-2" (click)="onLogForm()">
       Log Form
     </button>
   </form>
 </div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Media Selection</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body bg-light">
+    <div class="row m-0">
+      <!-- Image list -->
+      <ng-container *ngIf="unsplashService.photos.length; else elseListBlock">
+        <div
+          *ngFor="let photo of unsplashService.photos"
+          class="modal-image-container my-2"
+        >
+          <button
+            (click)="onSelectImage(photo)"
+            class="btn btn-primary modal-image-button"
+          >
+            <img src="{{ photo.urls.small }}" />
+          </button>
+        </div>
+      </ng-container>
+
+      <!-- No images loaded? -->
+      <ng-template #elseListBlock
+        ><button
+          class="btn btn-outline-primary col-12"
+          (click)="onLoadImages()"
+        >
+          Load images
+        </button></ng-template
+      >
+    </div>
+  </div>
+</ng-template>
