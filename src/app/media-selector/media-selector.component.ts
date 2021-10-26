@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Random } from 'unsplash-js/dist/methods/photos/types';
+import { Photo } from 'src/types';
 import { UnsplashService } from '../services/unsplash.service';
 
 @Component({
@@ -15,6 +15,7 @@ export class MediaSelectorComponent implements OnInit {
     description: new FormControl(''),
     media: new FormControl(''),
   });
+  images: Photo[] = [];
 
   constructor(
     private modalService: NgbModal,
@@ -25,14 +26,16 @@ export class MediaSelectorComponent implements OnInit {
    * Fetch images from UnsplashService on init.
    */
   ngOnInit() {
-    this.unsplashService.getPhotos();
+    this.loadImages();
   }
 
   /**
    * Fetch images from UnsplashService manually.
    */
-  onLoadImages() {
-    this.unsplashService.getPhotos();
+  loadImages() {
+    this.unsplashService.getPhotos().subscribe((data) => {
+      this.images = data as Photo[];
+    });
   }
 
   /**
@@ -47,7 +50,7 @@ export class MediaSelectorComponent implements OnInit {
    * Close "Select Image" modal and set media id value to
    * mediaForm.media.
    */
-  onSelectImage(image: Random) {
+  onSelectImage(image: Photo) {
     // console.log(image);
     this.modalService.dismissAll();
     this.mediaForm.controls.media.setValue(image?.id);
@@ -74,9 +77,7 @@ export class MediaSelectorComponent implements OnInit {
    */
   getSelectedImage() {
     const imageId = this.getSelectedImageId();
-    const image = this.unsplashService.photos.find(
-      (photo) => photo.id === imageId
-    );
+    const image = this.images.find((image) => image.id === imageId);
     return image?.urls.regular;
   }
 

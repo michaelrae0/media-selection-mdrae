@@ -73,26 +73,20 @@
   <div class="modal-body bg-light">
     <div class="row m-0">
       <!-- Image list -->
-      <ng-container *ngIf="unsplashService.photos.length; else elseListBlock">
-        <div
-          *ngFor="let photo of unsplashService.photos"
-          class="modal-image-container my-2"
-        >
+      <ng-container *ngIf="images.length; else elseListBlock">
+        <div *ngFor="let image of images" class="modal-image-container my-2">
           <button
-            (click)="onSelectImage(photo)"
+            (click)="onSelectImage(image)"
             class="btn btn-primary modal-image-button"
           >
-            <img src="{{ photo.urls.small }}" />
+            <img src="{{ image.urls.small }}" />
           </button>
         </div>
       </ng-container>
 
       <!-- No images loaded? -->
       <ng-template #elseListBlock
-        ><button
-          class="btn btn-outline-primary col-12"
-          (click)="onLoadImages()"
-        >
+        ><button class="btn btn-outline-primary col-12" (click)="loadImages()">
           Load images
         </button></ng-template
       >
